@@ -12,7 +12,7 @@
 #
 # As an example, your analysis should look similar to the one below:
 #
-# ```
+#
 # Financial Analysis
 # ----------------------------
 # Total Months: 25
@@ -34,14 +34,21 @@ def printResults():
     print('----------------------------')
     print('Total Months: ', total_months)
     print('Total Revenue: $', total_revenue)
-    print('Greatest Increase in Revenue: $', greatest_increase)
+    print('Average Revenue Change: $', abs(total_revenue_change) / (len(rowsArray) - 1))
+    print('Greatest Increase in Revenue: ', greatest_increase_month +  ' ($' + str (greatest_increase) + ')')
+    print('Greatest Decrease in Revenue: ', greatest_decrease_month +  ' ($-' + str (greatest_decrease) + ')')
 
-
-csvpath = os.path.join('raw_data', 'budget_data_1.csv')
 
 total_months = 0
 total_revenue = 0
 greatest_increase = 0
+greatest_increase_month = ''
+greatest_decrease = 0
+greatest_decrease_month = ''
+total_revenue_change = 0
+
+
+csvpath = os.path.join('raw_data', 'budget_data_1.csv')
 
 with open(csvpath, newline='') as csvfile:
 
@@ -59,8 +66,21 @@ with open(csvpath, newline='') as csvfile:
         # add the revenue in each row to the total_revenue
         total_revenue = total_revenue + int(rowsArray[i][1])
 
-        if (i != len(rowsArray) - 1 and greatest_increase < int(rowsArray[i + 1][1]) - int(rowsArray[i][1])):
-            greatest_increase = int(rowsArray[i + 1][1]) - int(rowsArray[i][1])
+        # calculate whether current row is max
+        max_length_not_reached = i != len(rowsArray) - 1
+
+        if max_length_not_reached:
+            total_revenue_change = total_revenue_change + int(rowsArray[i + 1][1]) - int(rowsArray[i][1])
+
+            # increase
+            if (greatest_increase < int(rowsArray[i + 1][1]) - int(rowsArray[i][1])):
+                greatest_increase = int(rowsArray[i + 1][1]) - int(rowsArray[i][1])
+                greatest_increase_month = rowsArray[i + 1][0]
+
+            # decrease
+            if (greatest_decrease < int(rowsArray[i][1]) - int(rowsArray[i + 1][1])):
+                greatest_decrease = int(rowsArray[i][1]) - int(rowsArray[i + 1][1])
+                greatest_decrease_month = rowsArray[i][0]
 
 
 printResults()
