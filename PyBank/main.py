@@ -1,32 +1,7 @@
-# Your task is to create a Python script that analyzes the records to calculate each of the following:
-#
-# * The total number of months included in the dataset
-#
-# * The total amount of revenue gained over the entire period
-#
-# * The average change in revenue between months over the entire period
-#
-# * The greatest increase in revenue (date and amount) over the entire period
-#
-# * The greatest decrease in revenue (date and amount) over the entire period
-#
-# As an example, your analysis should look similar to the one below:
-#
-#
-# Financial Analysis
-# ----------------------------
-# Total Months: 25
-# Total Revenue: $1241412
-# Average Revenue Change: $216825
-# Greatest Increase in Revenue: Sep-16 ($815531)
-# Greatest Decrease in Revenue: Aug-12 ($-652794)
-# ```
-
-# Your final script must be able to handle any such similarly structured dataset in the future (your boss is going to give you more of these -- so your script has to work for the ones to come). In addition, your final script should both print the analysis to the terminal and export a text file with the results.
-
-# * The total number of months included in the dataset
+#import
 import csv
 import os
+
 
 # prints results for the dataset
 def printResults():
@@ -47,7 +22,7 @@ greatest_decrease = 0
 greatest_decrease_month = ''
 total_revenue_change = 0
 
-
+#file to open
 csvpath = os.path.join('raw_data', 'budget_data_1.csv')
 
 with open(csvpath, newline='') as csvfile:
@@ -84,3 +59,17 @@ with open(csvpath, newline='') as csvfile:
 
 
 printResults()
+
+#outputting results to a text file called Financial Analysis
+output_file = "Financial_Analysis.txt"
+   #open the output file
+file = open(output_file, 'w')
+
+#writing the rows to print in text file
+file.write('Financial Analysis\n')
+file.write('----------------------------\n')
+file.write("Total_Months: " + str(total_months) + '\n')
+file.write("Total_Revenue: " + str(total_revenue)+ '\n')
+file.write("Average Revenue Change:" + str(abs(total_revenue_change) / (len(rowsArray) - 1)) + '\n')
+file.write("Greatest Increase in Revenue: "+ str(greatest_increase_month +  ' ($' + str (greatest_increase) + ')') + '\n')
+file.write("Greatest Decrease in Revenue: " +str(greatest_decrease_month +  ' ($-' + str (greatest_decrease) + ')') + '\n')
