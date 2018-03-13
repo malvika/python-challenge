@@ -2,17 +2,31 @@
 import csv
 import os
 
-
 # prints results for the dataset
 def printResults():
     print('Financial Analysis')
     print('----------------------------')
     print('Total Months: ', total_months)
     print('Total Revenue: $', total_revenue)
-    print('Average Revenue Change: $', abs(total_revenue_change) / (len(rowsArray) - 1))
+    print('Average Revenue Change: $', round(abs(total_revenue_change) / (len(rowsArray) - 1), 2))
     print('Greatest Increase in Revenue: ', greatest_increase_month +  ' ($' + str (greatest_increase) + ')')
     print('Greatest Decrease in Revenue: ', greatest_decrease_month +  ' ($-' + str (greatest_decrease) + ')')
 
+#outputting results to a text file called Financial Analysis
+def writeResults():
+    output_file = "Financial_Analysis.txt"
+
+    #open the output file
+    file = open(output_file, 'w')
+
+    #writing the rows to print in text file
+    file.write('Financial Analysis\n')
+    file.write('----------------------------\n')
+    file.write('Total_Months: ' + str(total_months) + '\n')
+    file.write('Total_Revenue: ' + str(total_revenue) + '\n')
+    file.write('Average Revenue Change: $ ' + str(round(abs(total_revenue_change) / (len(rowsArray) - 1), 2)) + '\n')
+    file.write('Greatest Increase in Revenue: ' + str(greatest_increase_month +  ' ($' + str (greatest_increase) + ')') + '\n')
+    file.write('Greatest Decrease in Revenue: ' + str(greatest_decrease_month +  ' ($-' + str (greatest_decrease) + ')') + '\n')
 
 total_months = 0
 total_revenue = 0
@@ -54,22 +68,9 @@ with open(csvpath, newline='') as csvfile:
 
             # decrease
             if (greatest_decrease < int(rowsArray[i][1]) - int(rowsArray[i + 1][1])):
-                greatest_decrease = int(rowsArray[i][1]) - int(rowsArray[i + 1][1])
+                greatest_decrease = int(rowsArray[i + 1][1]) - int(rowsArray[i][1])
                 greatest_decrease_month = rowsArray[i][0]
 
 
 printResults()
-
-#outputting results to a text file called Financial Analysis
-output_file = "Financial_Analysis.txt"
-   #open the output file
-file = open(output_file, 'w')
-
-#writing the rows to print in text file
-file.write('Financial Analysis\n')
-file.write('----------------------------\n')
-file.write("Total_Months: " + str(total_months) + '\n')
-file.write("Total_Revenue: " + str(total_revenue)+ '\n')
-file.write("Average Revenue Change:" + str(abs(total_revenue_change) / (len(rowsArray) - 1)) + '\n')
-file.write("Greatest Increase in Revenue: "+ str(greatest_increase_month +  ' ($' + str (greatest_increase) + ')') + '\n')
-file.write("Greatest Decrease in Revenue: " +str(greatest_decrease_month +  ' ($-' + str (greatest_decrease) + ')') + '\n')
+writeResults()

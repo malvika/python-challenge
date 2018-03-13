@@ -13,19 +13,17 @@ all_votes = []
 def printResults():
     winner_count = 0
     total_votes = len(rowsArray) - 1
+    winners_output = ''
 
     print('Election Results')
     print('----------------------------')
     print('Total Votes: ', total_votes)
     print('----------------------------')
-    file.write('Election Results\n')
-    file.write('----------------------------\n')
-
 
     for can in candidates:
         candidate_count = all_votes.count(can)
+        winners_output = winners_output + can + ': '  + str( round((candidate_count / total_votes) * 100, 1) ) + '% (' + str(candidate_count) + ')' + '\n'
         print(can + ': ' + str( round((candidate_count / total_votes) * 100, 1) ) + '% (' + str(candidate_count) + ')')
-        file.write(can + ': '  + str( round((candidate_count / total_votes) * 100, 1) ) + '% (' + str(candidate_count) + ')' + '\n')
 
         if candidate_count > winner_count:
             winner_count = candidate_count
@@ -33,12 +31,16 @@ def printResults():
 
     print('----------------------------')
     print('Winner : ' + winner)
-    print('----------------------------')    
+    print('----------------------------')
+
+    file.write('Election Results\n')
+    file.write('----------------------------\n')
     file.write("Total Votes: " + str(total_votes) + '\n')
+    file.write('----------------------------\n')
+    file.write(winners_output)
     file.write('----------------------------\n')
     file.write('Winner : ' + winner + '\n')
     file.write('----------------------------\n')
-
 
 csvpath = os.path.join('raw_data', 'election_data_1.csv')
 with open(csvpath, newline='') as csvfile:
